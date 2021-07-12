@@ -9,11 +9,12 @@ import './App.css';
 class App extends Component {
   state = {
     contacts: [],
-    name: ''
+    name: '',
+    number: ''
   };
 
-  handleInputName = (e) => {
-    this.setState({ name: e.target.value })
+  handleInput = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
 
     //this.validInput(e) ? this.setState({ name: e.target.value }) : console.log('Недопустимый символ');
   };
@@ -21,16 +22,17 @@ class App extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
-    const newContact = { name: this.state.name, id: uuidv4() };
+    const newContact = { name: this.state.name, id: uuidv4(), number: this.state.number };
 
     this.setState(prevState => {
       return { contacts: [newContact, ...prevState.contacts] };
     });
-    this.resetInputName();
+    this.resetInput('name');
+    this.resetInput('number');
   };
 
-  resetInputName() {
-    this.setState({ name: '' });
+  resetInput(nameInput) {
+    this.setState({ [nameInput]: '' });
   };
 
   validInput(e) {
@@ -55,14 +57,25 @@ class App extends Component {
                 title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                 required
                 value={this.state.name}
-                onChange={this.handleInputName}
+                onChange={this.handleInput}
+              />
+            </label>
+            <label>Number
+              <input
+                type="tel"
+                name="number"
+                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+                required
+                value={this.state.number}
+                onChange={this.handleInput}
               />
             </label>
             <button type="submit">Add contact</button>
           </form>
           <h2>Contacts</h2>
           <ul>
-            {items.map(item => (<li key={item.id}>{item.name}</li>))}
+            {items.map(item => (<li key={item.id}>{item.name}: {item.number}</li>))}
           </ul>
         </div>
       </>
