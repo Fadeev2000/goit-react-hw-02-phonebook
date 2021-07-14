@@ -8,7 +8,13 @@ import './App.css';
 
 class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
     name: '',
     number: ''
   };
@@ -16,7 +22,7 @@ class App extends Component {
   handleInput = (e) => {
     this.setState({ [e.target.name]: e.target.value })
 
-    //this.validInput(e) ? this.setState({ name: e.target.value }) : console.log('Недопустимый символ');
+    //this.validInput(e) ? this.setState({ [e.target.name]: e.target.value }) : console.log('Недопустимый символ');
   };
 
   handleSubmit = (e) => {
@@ -42,7 +48,11 @@ class App extends Component {
   }
 
   render() {
-    const items = this.state.contacts;
+    const isTwoInputValue = this.state.name !== '' && this.state.number !== '';
+    const items = this.state.filter === '' ?
+      this.state.contacts :
+      this.state.contacts.filter(item => item.name.toLowerCase().includes(this.state.filter.toLowerCase())
+      );
 
     return (
       <>
@@ -71,9 +81,17 @@ class App extends Component {
                 onChange={this.handleInput}
               />
             </label>
-            <button type="submit">Add contact</button>
+            {isTwoInputValue ? <button type="submit">Add contact</button> : <button type="submit" disabled>Add contact</button>}
           </form>
           <h2>Contacts</h2>
+          <label>Find contacts by name
+            <input
+              type="text"
+              name="filter"
+              value={this.state.filter}
+              onChange={this.handleInput}
+            />
+          </label>
           <ul>
             {items.map(item => (<li key={item.id}>{item.name}: {item.number}</li>))}
           </ul>
