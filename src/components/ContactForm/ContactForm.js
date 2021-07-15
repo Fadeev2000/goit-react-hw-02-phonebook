@@ -7,6 +7,10 @@ class ContactForm extends Component {
         number: ''
     };
 
+    isNewContact(contact) {
+        return !this.props.onCheck.some(el => el.name === contact);
+    }
+
     handleInput = e => {
         this.setState({ [e.target.name]: e.target.value })
     };
@@ -15,8 +19,12 @@ class ContactForm extends Component {
         e.preventDefault();
 
         const newContact = { name: this.state.name, id: uuidv4(), number: this.state.number };
-
-        this.props.onSubmit(newContact);
+                
+        if (this.isNewContact(newContact.name)) {
+            this.props.onSubmit(newContact);
+        } else {
+            alert(`${newContact.name} is already in contacts`);
+        }
 
         this.resetInput('name');
         this.resetInput('number');
@@ -24,7 +32,7 @@ class ContactForm extends Component {
     
     resetInput(nameInput) {
         this.setState({ [nameInput]: '' });
-    };
+    };    
     
     render() {
         const isTwoInputValue = this.state.name !== '' && this.state.number !== '';

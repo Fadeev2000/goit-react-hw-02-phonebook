@@ -19,10 +19,10 @@ class App extends Component {
   };
 
   addContact = newContact => {
-    this.setState(prevState => {
-      return { contacts: [newContact, ...prevState.contacts] };
-    });
-  }
+    this.setState(prevState => (
+      { contacts: [newContact, ...prevState.contacts] }
+    ));
+  }; 
 
   changeFilter = e => {
         this.setState({ [e.target.name]: e.target.value })
@@ -39,7 +39,7 @@ class App extends Component {
       <>
         <div>
           <h1>Fhonebook</h1>
-          <ContactForm onSubmit={this.addContact}/>
+          <ContactForm onSubmit={this.addContact} onCheck={this.state.contacts}/>
           
           <h2>Contacts</h2>
           <Filter value={this.state.filter} onChange={this.changeFilter} />
