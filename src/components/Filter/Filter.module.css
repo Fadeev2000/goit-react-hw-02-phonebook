@@ -1,0 +1,14 @@
+.label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.input {
+  display: block;
+  margin-top: 10px;
+}
+
+.form__button {
+  margin-top: 10px;
+  padding: 0 5px;
+}
